@@ -1,3 +1,7 @@
+## Credentials
+
+Шейко Михаил Андреевич Б05-352
+
 ## Description
 
 This is a convenient web tool for creating and controlling youtube playlists with donation alerts integration
@@ -69,3 +73,8 @@ Delete video by its id
 Get list of links and titles to videos in queue, including last 5 played videos
 </details>
 
+## Dependencies
+
+- python >= 3.10
+- fastapi
+- pydantic
