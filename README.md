@@ -1,3 +1,5 @@
+# Youtube playlist
+
 ## Credentials
 
 Шейко Михаил Андреевич Б05-352
@@ -8,6 +10,7 @@ This is a convenient web tool for creating and controlling youtube playlists wit
 
 ## Desired functionality
 
+1) Integrated video player
 1) Ability to add videos manually
 2) Ability to control video flow
 3) Ability to skip to the desired video in queue
@@ -57,6 +60,14 @@ Playlist controller
 		"""
 		pass
 ```
+
+When addition of the video is requested either by hand or via API exemplar of class Video is created. All of its fields are assigned asynchronously. This guarantees that simultaneous requests can be worked with correctly. Then it's being put into the queue.
+
+When deletion request arrives if video is in the queue it's being deleted. If it's not present, then request is ignored.
+
+If API is given wrong link video it responds with ERROR 400 (Bad Request). No changes to system state are made in this case.
+
+UI elemnts use same API as an external user does.
 
 ### Supported api endpoints
 
