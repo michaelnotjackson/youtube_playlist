@@ -1,4 +1,4 @@
-<turbo-frame id="video-{{ video.id }}">
+<turbo-frame id="video-{{ video.uuid }}">
     <li class="media">
         <div class="media-left">
             <a href="#">
@@ -10,12 +10,12 @@
         </div>
         <div class="media-right">
             <div class="btn-group" role="group">
-                <form method="POST" action="{{ url_for('force-play', id=video.id) }}">
+                <form method="POST" action="{{ url_for('force-play', id=video.uuid) }}">
                     <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-play"></span>
                     </button>
                 </form>
-                <form method="POST" action="{{ url_for('delete', id=video.id) }}">
+                <form method="POST" action="{{ url_for('delete', id=video.uuid) }}">
                     <button type="button" class="btn btn-default">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
