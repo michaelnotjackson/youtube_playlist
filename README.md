@@ -92,3 +92,4 @@ Get list of links and titles to videos in queue, including last 5 played videos
 - flask-pydantic
 - pydantic
 - aiohttp
+- isodate
