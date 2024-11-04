@@ -86,6 +86,8 @@ Get list of links and titles to videos in queue, including last 5 played videos
 
 ## Dependencies
 
-- python >= 3.10
-- fastapi
+- python >= 3.12
+- flask
+- turbo-flask
+- flask-pydantic
 - pydantic
