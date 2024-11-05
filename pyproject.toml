@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-Flask = "^3.0.3"
+Flask = {extras = ["async"], version = "^3.0.3"}
 Turbo-Flask = "^0.8.5"
 pydantic = "^2.9.2"
 flask-pydantic = "^0.12.0"
