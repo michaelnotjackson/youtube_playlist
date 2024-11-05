@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort, redirect, url_for
 from turbo_flask import Turbo
 from flask_pydantic import validate
 from models import Video, video_from_url
@@ -9,6 +9,12 @@ app = Flask(__name__)
 turbo = Turbo(app)
 
 videos: list[Video] = []
+
+def get_video_by_id(uuid: str):
+    video = [video for video in videos if video.uuid == uuid]
+    if len(video) == 0:
+        abort(404)
+    return video[0]
 @app.route('/', methods=['GET', 'POST'])
 async def index():
     if request.method == 'POST':
@@ -24,15 +30,19 @@ async def index():
     return render_template('index.html', videos=videos)
 
 
+@validate
 @app.route('/force_play/<uuid>', methods=['POST'])
-# @validate
 def force_play(uuid: str):
     pass
 
+@validate
 @app.route('/delete/<uuid>', methods=['POST'])
-# @validate
 def delete(uuid: str):
-    pass
+    video = get_video_by_id(uuid)
+    videos.remove(video)
+    if turbo.can_stream():
+        return turbo.stream(turbo.remove(target=f'video-{video.uuid}'))
+    return redirect(url_for('index'))
 
 setup_once_lock = Lock()
 

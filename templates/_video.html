@@ -10,12 +10,12 @@
             <li class="list-group-item d-flex flex-column justify-content-center">
                 <div class="btn-group" role="group">
                     <form method="POST" action="{{ url_for('force_play', uuid=video.uuid) }}">
-                        <button type="button" class="btn">
+                        <button type="submit" class="btn">
                             <i class="bi bi-play-fill"></i>
                         </button>
                     </form>
                     <form method="POST" action="{{ url_for('delete', uuid=video.uuid) }}">
-                        <button type="button" class="btn">
+                        <button type="submit" class="btn">
                             <i class="bi bi-trash-fill"></i>
                         </button>
                     </form>
