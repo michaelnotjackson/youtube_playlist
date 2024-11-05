@@ -21,7 +21,7 @@ async def index():
                     render_template('_video.html', video=video), target='videos'),
                 turbo.update(
                     render_template('_video_input.html'), target='form')])
-    return render_template('index.html')
+    return render_template('index.html', videos=videos)
 
 
 @app.route('/force_play/<uuid>', methods=['POST'])
