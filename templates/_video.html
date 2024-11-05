@@ -2,7 +2,7 @@
     <li class="media">
         <div class="media-left">
             <a href="#">
-                <img class="media-object" src="video.thumbnail_url">
+                <img class="media-object" src="{{ video.thumbnail_url }}">
             </a>
         </div>
         <div class="media-boy">
@@ -10,13 +10,13 @@
         </div>
         <div class="media-right">
             <div class="btn-group" role="group">
-                <form method="POST" action="{{ url_for('force-play', id=video.uuid) }}">
-                    <button type="button" class="btn btn-default">
+                <form method="POST" action="{{ url_for('force_play', uuid=video.uuid) }}">
+                    <button type="button" class="btn">
                         <span class="glyphicon glyphicon-play"></span>
                     </button>
                 </form>
-                <form method="POST" action="{{ url_for('delete', id=video.uuid) }}">
-                    <button type="button" class="btn btn-default">
+                <form method="POST" action="{{ url_for('delete', uuid=video.uuid) }}">
+                    <button type="button" class="btn">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
                 </form>
