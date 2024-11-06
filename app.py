@@ -50,7 +50,7 @@ def force_play(video_id: int):
     current_video = video
 
     if current_video.playback_url is None:
-        ydl_opts = {'cookiefile': os.getenv('COOKIE_FILE_PATH'), 'format': 'bestvideo[ext=webm]'}
+        ydl_opts = {'cookiefile': os.getenv('COOKIE_FILE_PATH'), 'format': 'best'}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(current_video.video_url, download=False)
             current_video.playback_url = info['url']
