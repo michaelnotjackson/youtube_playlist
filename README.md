@@ -94,3 +94,4 @@ Get list of links and titles to videos in queue, including last 5 played videos
 - pydantic
 - aiohttp
 - yt-dlp
+- python-dotenv
