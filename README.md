@@ -92,4 +92,5 @@ Get list of links and titles to videos in queue, including last 5 played videos
 - turbo-flask
 - flask-pydantic
 - pydantic
+- aiohttp
 - yt-dlp
