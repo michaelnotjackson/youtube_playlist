@@ -1,4 +1,4 @@
-<li class="list-group-item border-0 d-flex align-items-center" id="video-{{ video.uuid }}">
+<li class="list-group-item border-0 d-flex align-items-center" id="video-{{ video.id }}">
     <ul class="list-group list-group-horizontal-sm">
         <li class="list-group-item">
             <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}">
@@ -8,12 +8,12 @@
         </li>
         <li class="list-group-item d-flex flex-column justify-content-center">
             <div class="btn-group" role="group">
-                <form method="POST" action="{{ url_for('force_play', uuid=video.uuid) }}">
+                <form method="POST" action="{{ url_for('force_play', video_id=video.id) }}">
                     <button type="submit" class="btn">
                         <i class="bi bi-play-fill"></i>
                     </button>
                 </form>
-                <form method="POST" action="{{ url_for('delete', uuid=video.uuid) }}">
+                <form method="POST" action="{{ url_for('delete', video_id=video.id) }}">
                     <button type="submit" class="btn">
                         <i class="bi bi-trash-fill"></i>
                     </button>
