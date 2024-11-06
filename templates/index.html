@@ -18,13 +18,7 @@
         <form method="POST" id="input-form">
             {% include '_video_input.html' %}
         </form>
-        <ol class="video-list list-group list-group-numbered d-flex flex-column justify-content-center align-items-center">
-            <turbo-frame id="videos">
-                {% for video in videos %}
-                    {% include '_video.html' %}
-                {% endfor %}
-            </turbo-frame>
-        </ol>
+        {% include '_video_list.html' %}
     </turbo-frame>
 </div>
 </body>

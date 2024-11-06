@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, abort, redirect, url_for
+from rich.markup import render
 from turbo_flask import Turbo
 from flask_pydantic import validate
 from models import Video, video_from_url
@@ -23,8 +24,10 @@ async def index():
         videos.append(video)
         if turbo.can_stream():
             return turbo.stream([
-                turbo.append(
-                    render_template('_video.html', video=video), target='videos'),
+                turbo.replace(
+                    render_template('_video_list.html', videos=videos),
+                    target='videos'
+                ),
                 turbo.update(
                     render_template('_video_input.html'), target='form')])
     return render_template('index.html', videos=videos)
