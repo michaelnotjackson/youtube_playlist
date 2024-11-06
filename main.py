@@ -55,12 +55,13 @@ def force_play(uuid: str):
             current_video.playback_url = info['url']
 
     if turbo.can_stream():
-        delete(uuid)
+        videos.remove(current_video)
         return turbo.stream([
             turbo.replace(
                 render_template('_player.html', videos=videos, current_video=video),
                 target='player'
-            )])
+            ),
+            turbo.remove(target=f'video-{current_video.uuid}')])
     abort(404)
 
 
