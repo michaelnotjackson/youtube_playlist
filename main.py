@@ -11,6 +11,8 @@ turbo = Turbo(app)
 
 videos: list[Video] = []
 
+current_video = None
+
 def get_video_by_id(uuid: str):
     video = [video for video in videos if video.uuid == uuid]
     if len(video) == 0:
@@ -25,12 +27,12 @@ async def index():
         if turbo.can_stream():
             return turbo.stream([
                 turbo.replace(
-                    render_template('_video_list.html', videos=videos),
+                    render_template('_video_list.html', videos=videos, current_video=current_video),
                     target='videos'
                 ),
                 turbo.update(
                     render_template('_video_input.html'), target='form')])
-    return render_template('index.html', videos=videos)
+    return render_template('index.html', videos=videos, current_video=current_video)
 
 
 @validate
