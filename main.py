@@ -1,3 +1,5 @@
+from crypt import methods
+
 from flask import Flask, render_template, request, abort, redirect, url_for
 from turbo_flask import Turbo
 from flask_pydantic import validate
@@ -41,6 +43,12 @@ async def index():
     return render_template('index.html', videos=videos, current_video=current_video)
 
 
+
+@validate
+@app.route('/play_next', methods=['POST'])
+def play_next():
+    print("Play next")
+
 @validate
 @app.route('/force_play/<uuid>', methods=['POST'])
 def force_play(uuid: str):
@@ -49,7 +57,7 @@ def force_play(uuid: str):
     current_video = video
 
     if current_video.playback_url is None:
-        ydl_opts = {'cookiefile': os.getenv('COOKIE_FILE_PATH'), 'format': 'best'}
+        ydl_opts = {'cookiefile': os.getenv('COOKIE_FILE_PATH'), 'format': 'bestvideo[ext=webm]'}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(current_video.video_url, download=False)
             current_video.playback_url = info['url']
