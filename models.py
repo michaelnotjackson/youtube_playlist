@@ -24,7 +24,7 @@ class Video:
     title: str | None
     thumbnail_url: str | None
     video_url: str
-
+    playback_url: str | None
 
 
 async def video_from_url(video_url: str, client_session: ClientSession | None = None):
@@ -52,5 +52,6 @@ async def video_from_url(video_url: str, client_session: ClientSession | None = 
         uuid4().hex,
         data['items'][0]['snippet']['title'],
         data['items'][0]['snippet']['thumbnails']['default']['url'],
-        video_url
+        video_url,
+        None
     )
