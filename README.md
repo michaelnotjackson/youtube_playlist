@@ -53,16 +53,28 @@ UI elemnts use same API as an external user does.
 ### Supported api endpoints
 
 <details>
-<summary>[PUT] /api/v1/add/{video_url}</summary>
+<summary>[GET] /api/v1/get_next</summary>
+Get next video from list
+</details>
+<details>
+<summary>[GET] /api/v1/get_current</summary>
+Get currently playing video
+</details>
+<details>
+<summary>[PUT] /api/v1/add?video_url=&lt;video_url&gt;</summary>
 Add video to the queue by its url
 </details>
 <details>
-<summary>[DELTE] /api/v1/delete/{video_id}</summary>
+<summary>[DELTE] /api/v1/delete?video_id=&lt;video_id&gt;</summary>
 Delete video by its id
 </details>
 <details>
 <summary>[GET] /api/v1/get_video_list</summary>
-Get list of links and titles to videos in queue, including last 5 played videos
+Get list of links and titles to videos in queue
+</details>
+<details>
+<summary>[GET] /api/v1/get_video_data_by_id?video_id=&lt;video_id&gt;</summary>
+Get video data, including playback url, by its id
 </details>
 
 ## Dependencies
