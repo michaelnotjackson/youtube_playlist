@@ -18,10 +18,9 @@
 </head>
 <body>
 <div class="youtube-playlist">
-    <h1>YouTube playlist</h1>
-    <turbo-frame id="all">
+    <turbo-frame id="all" class="d-flex justify-content-center align-items-center flex-column">
         {% include '_player.html' %}
-        <form method="POST" id="input-form">
+        <form method="POST" id="input-form" class="pt-2 pb-2">
             {% include '_video_input.html' %}
         </form>
         {% include '_video_list.html' %}

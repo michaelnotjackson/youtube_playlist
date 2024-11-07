@@ -27,9 +27,9 @@
     }
 </script>
 <turbo-frame id="videos">
-    <ol class="list-group list-group-numbered d-flex flex-column justify-content-center align-items-center">
+    <div class="list-group list-group-numbered d-flex flex-column justify-content-center align-items-center">
         {% for video in videos %}
             {% include '_video.html' %}
         {% endfor %}
-    </ol>
+    </div>
 </turbo-frame>
