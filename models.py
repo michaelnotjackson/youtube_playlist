@@ -19,10 +19,10 @@ class Video:
         - video_url: str - YouTube video url
         - playback_url: str - Video playback url
     """
-    id: str
+    id: str | None
     title: str | None
     thumbnail_url: str | None
-    video_url: str
+    video_url: str | None
     playback_url: str | None
 
 

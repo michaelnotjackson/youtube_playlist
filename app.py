@@ -6,17 +6,16 @@ from threading import Lock
 import dotenv
 import yt_dlp
 import os
-from pydantic import RootModel
 
 app = Flask(__name__)
 turbo = Turbo(app)
 
 videos: list[Video] = []
 
-current_video: Video | None = None
+current_video: list[Video] = []
 
 
-def get_video_by_id(video_id: int):
+def get_video_by_id(video_id: str):
     global videos
     video = [video for video in videos if video.id == video_id]
     if len(video) == 0:
@@ -27,6 +26,7 @@ def get_video_by_id(video_id: int):
 @app.route('/', methods=['GET', 'POST'])
 async def index():
     global current_video, videos, turbo
+    cur_vid = current_video[0] if len(current_video) else None
     if request.method == 'POST':
         url = request.form['video']
         video = await video_from_url(url)
@@ -34,12 +34,12 @@ async def index():
         if turbo.can_stream():
             return turbo.stream([
                 turbo.replace(
-                    render_template('_video_list.html', videos=videos, current_video=current_video),
+                    render_template('_video_list.html', videos=videos, current_video=cur_vid),
                     target='videos'
                 ),
                 turbo.update(
                     render_template('_video_input.html'), target='form')])
-    return render_template('index.html', videos=videos, current_video=current_video)
+    return render_template('index.html', videos=videos, current_video=cur_vid)
 
 
 @validate
@@ -47,23 +47,17 @@ async def index():
 def force_play(video_id: int):
     global turbo, videos, current_video
     video = get_video_by_id(video_id)
-    current_video = video
+    videos.remove(video)
+    current_video.clear()
+    current_video.append(video)
 
-    if current_video.playback_url is None:
+    if current_video[0].playback_url is None:
         ydl_opts = {'cookiefile': os.getenv('COOKIE_FILE_PATH'), 'format': 'best'}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(current_video.video_url, download=False)
-            current_video.playback_url = info['url']
+            info = ydl.extract_info(current_video[0].video_url, download=False)
+            current_video[0].playback_url = info['url']
 
-    if turbo.can_stream():
-        videos.remove(current_video)
-        return turbo.stream([
-            turbo.replace(
-                render_template('_player.html', videos=videos, current_video=video),
-                target='player'
-            ),
-            turbo.remove(target=f'video-{current_video.id}')])
-    return redirect(url_for('index'))
+    return jsonify({'status': 'ok'})
 
 
 @validate
@@ -77,7 +71,25 @@ def delete(video_id: str):
     return redirect(url_for('index'))
 
 
+@validate
+@app.route('/reload_data', methods=['POST'])
+def reload_data():
+    global videos, turbo, current_video
+    cur_vid = current_video[0] if len(current_video) else None
+    turbo.push(turbo.replace(
+        render_template('_video_list.html', videos=videos, current_video=cur_vid),
+        target='videos'
+    ))
+    turbo.push(turbo.replace(
+        render_template('_player.html', videos=videos, current_video=cur_vid),
+        target='player'
+    ))
+    return jsonify({'status': 'ok'})
+
+
 setup_once_lock = Lock()
+
+
 @app.before_request
 def app_setup():
     with setup_once_lock:

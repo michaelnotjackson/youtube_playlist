@@ -1,37 +1,25 @@
-<turbo-frame id="player">
-    {% if current_video is not none %}
-        <video id="vid1" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="560"
-               height="315">
-            <source src="{{ current_video.playback_url }}" type="video/webm">
-        </video>
-        {#        <player width="560" height="315" src="{{ current_video.playback_url }}" title="YouTube video player"#}
-        {#                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"#}
-        {#                allowfullscreen class="video-player">#}
-        {#        </player>#}
-        <script type="text/javascript">
-            const player = videojs("vid1", null, function () {
-                this.on("ended", async function () {
-                    let video = await fetch("{{ url_for('api_v1_get_next') }}", {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-                    video = await video.json();
-                    console.log(video);
-                    if (video.id) {
-                        let result = await fetch("/force_play/" + video.id, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            }
-                        });
-                        location.reload();
-                    }
-                });
+<video id="vid1" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" width="560"
+       height="315">
+    <source src="{{ current_video.playback_url }}">
+</video>
+<script type="text/javascript">
+    const player = videojs("vid1", null, function () {
+        this.on("ended", async function () {
+            let video = await fetch("{{ url_for('api_v1_get_next') }}", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
-        </script>
-    {% else %}
-        <img width="560" height="315" src="https://via.placeholder.com/560x315.png?text=No+video" alt="No video">
-    {% endif %}
-</turbo-frame>
+            video = await video.json();
+            console.log(video);
+            play_video(video['id']);
+            fetch("/reload_data", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+        });
+    });
+</script>

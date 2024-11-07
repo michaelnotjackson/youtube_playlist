@@ -8,11 +8,9 @@
         </li>
         <li class="list-group-item d-flex flex-column justify-content-center">
             <div class="btn-group" role="group">
-                <form method="POST" action="{{ url_for('force_play', video_id=video.id) }}">
-                    <button type="submit" class="btn">
-                        <i class="bi bi-play-fill"></i>
-                    </button>
-                </form>
+                <button type="button" class="btn" onclick="play_video('{{ video.id }}');">
+                    <i class="bi bi-play-fill"></i>
+                </button>
                 <form method="POST" action="{{ url_for('delete', video_id=video.id) }}">
                     <button type="submit" class="btn">
                         <i class="bi bi-trash-fill"></i>
