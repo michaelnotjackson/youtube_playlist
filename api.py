@@ -10,6 +10,9 @@ import yt_dlp
 @validate
 @app.route('/api/v1/get_next', methods=['GET'])
 def api_v1_get_next():
+    """
+    Get next video from the list
+    """
     video = videos[0]
     return RootModel[Video](video).model_dump_json(exclude={'playback_url'})
 
@@ -17,11 +20,18 @@ def api_v1_get_next():
 @validate
 @app.route('/api/v1/get_video_list', methods=['GET'])
 def api_v1_get_video_list():
+    """
+    Get list of videos
+    """
     return RootModel[list[Video]](videos).model_dump_json(exclude={'playback_url'})
 
 @validate
 @app.route('/api/v1/add', methods=['PUT'])
 async def api_v1_add():
+    """
+    Add video to the list.
+    :param: video_url: str - YouTube video url
+    """
     url = request.json['video_url']
     video = await video_from_url(url)
     videos.append(video)
@@ -30,6 +40,10 @@ async def api_v1_add():
 @validate
 @app.route('/api/v1/delete', methods=['DELETE'])
 def api_v1_delete():
+    """
+    Delete video from the list
+    :param: video_id: str - Video object uuid
+    """
     video_id = request.json['video_id']
     video = get_video_by_id(video_id)
     videos.remove(video)
@@ -38,11 +52,17 @@ def api_v1_delete():
 @validate
 @app.route('/api/v1/get_current', methods=['GET'])
 def api_v1_get_current():
+    """
+    Get currently playing video
+    """
     return RootModel[Video](current_video[0]).model_dump_json()
 
 @validate
 @app.route('/api/v1/get_video_data_by_id', methods=['GET'])
 def api_v1_get_video_data_by_id():
+    """
+    Get video data by given id
+    """
     video_id = request.args['video_id']
     video = get_video_by_id(video_id)
     if video.playback_url is None:

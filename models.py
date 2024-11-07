@@ -27,6 +27,12 @@ class Video:
 
 
 async def video_from_url(video_url: str, client_session: ClientSession | None = None):
+    """
+    Video object factory function. Constructs video from url
+    :param video_url:
+    :param client_session:
+    :return:
+    """
     should_close: bool = False
     if client_session is None:
         should_close = True

@@ -14,52 +14,33 @@ This is a convenient web tool for creating and controlling youtube playlists wit
 1) Ability to add videos manually
 2) Ability to control video flow
 3) Ability to skip to the desired video in queue
-4) Integration with donation alerts linked media
+4) <s>Integration with donationalerts linked media</s>
+
+Integration with dontaionalerts api discard because of extremely poor written API docs
 
 ## Architecture
 
 ```python
 @dataclass
 class Video:
-"""
-Storage for info about queued videos
-"""
-	video_url: str
-	thumbnail_url: str
-	title: str
-	id: uuid.UUID
+    """
+    Dataclass which holds information about video
 
-class Playlist:
-"""
-Playlist controller
-"""
-	queue: collections.dequeue[Video]
-	current_idx: int
-
-	def get_current_video(self) -> Video:
-		"""
-		@return: currently playing video
-		"""
-		pass
-
-	def add_video(self, video: Video) -> None:
-		"""
-		Add video to queue to the last place
-
-		@type video: Video
-		@param video: Video to add into the queue
-		"""
-		pass
-
-	def remove_video(self, video_id: uuid.UUID) -> None:
-		"""
-		Removes specified video from the queue
-
-		@type video_id: uuid.UUID
-		@param video_id: ID of video to remove
-		"""
-		pass
+    Attributes:
+        - id: str - Video object uuid
+        - title: str | None - Video title
+        - thumbnail_url: str | None - Video thumbnail url
+        - video_url: str - YouTube video url
+        - playback_url: str - Video playback url
+    """
+    id: str | None
+    title: str | None
+    thumbnail_url: str | None
+    video_url: str | None
+    playback_url: str | None
 ```
+
+`EDIT: Deleted Playlist class as it's not needed`
 
 When addition of the video is requested either by hand or via API exemplar of class Video is created. All of its fields are assigned asynchronously. This guarantees that simultaneous requests can be worked with correctly. Then it's being put into the queue.
 

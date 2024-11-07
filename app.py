@@ -25,6 +25,10 @@ def get_video_by_id(video_id: str):
 
 @app.route('/', methods=['GET', 'POST'])
 async def index():
+    """
+    On GET request, render index.html template with videos list and current video.
+    On POST request, add video to the list and rerender corresponding turbo frames.
+    """
     global current_video, videos, turbo
     cur_vid = current_video[0] if len(current_video) else None
     if request.method == 'POST':
@@ -45,6 +49,10 @@ async def index():
 @validate
 @app.route('/force_play/<video_id>', methods=['POST'])
 def force_play(video_id: int):
+    """
+    Forcefully play selected video
+    :param video_id: str - Video object uuid
+    """
     global turbo, videos, current_video
     video = get_video_by_id(video_id)
     videos.remove(video)
@@ -63,6 +71,10 @@ def force_play(video_id: int):
 @validate
 @app.route('/delete/<video_id>', methods=['POST'])
 def delete(video_id: str):
+    """
+    Delete video from the list
+    :param video_id: str - Video object uuid
+    """
     global videos, turbo
     video = get_video_by_id(video_id)
     videos.remove(video)
@@ -74,6 +86,9 @@ def delete(video_id: str):
 @validate
 @app.route('/reload_data', methods=['POST'])
 def reload_data():
+    """
+    Reload video list and player data
+    """
     global videos, turbo, current_video
     cur_vid = current_video[0] if len(current_video) else None
     turbo.push(turbo.replace(
@@ -88,10 +103,11 @@ def reload_data():
 
 
 setup_once_lock = Lock()
-
-
 @app.before_request
 def app_setup():
+    """
+    Setup app before first request
+    """
     with setup_once_lock:
         try:
             dotenv.load_dotenv('.env')
