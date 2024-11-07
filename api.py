@@ -2,7 +2,7 @@ from app import app, videos, get_video_by_id, current_video
 from flask_pydantic import validate
 from pydantic import RootModel
 from models import Video, video_from_url
-from flask import request, jsonify
+from flask import request, jsonify, abort
 import os
 import yt_dlp
 
@@ -33,7 +33,13 @@ async def api_v1_add():
     :param: video_url: str - YouTube video url
     """
     url = request.json['video_url']
-    video = await video_from_url(url)
+    video: Video | None = None
+    try:
+        video = await video_from_url(url)
+        if video.thumbnail_url == '':
+            abort(400)
+    except ():
+        abort(400)
     videos.append(video)
     return RootModel[Video](video).model_dump_json(exclude={'playback_url'})
 
