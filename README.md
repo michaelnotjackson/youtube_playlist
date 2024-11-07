@@ -16,7 +16,7 @@ This is a convenient web tool for creating and controlling youtube playlists wit
 3) Ability to skip to the desired video in queue
 4) <s>Integration with donationalerts linked media</s>
 
-Integration with dontaionalerts api discard because of extremely poor written API docs
+Integration with dontaionalerts api was discarded because of extremely poor written API docs.
 
 ## Architecture
 
@@ -76,3 +76,16 @@ Get list of links and titles to videos in queue, including last 5 played videos
 - aiohttp
 - yt-dlp
 - python-dotenv
+
+
+## Launching guide
+1) Install dependencies either via pip or poetry:
+    * In case of pip you need to run `pip install -r requirements.txt`
+    * In case of poetry you need to run `poetry install`
+2) Create `.env` file in the root of the project with the following content:
+    ```
+    YOUTUBE_API_KEY=<your_youtube_api_key>
+    COOKIE_FILE_PATH=<path_to_cookie_file_with_youtube_auth>
+    ```
+   * Cookie file can be obtained by following [yt-dlp documentation](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies)
+3) Run the server by executing `python main.py`
