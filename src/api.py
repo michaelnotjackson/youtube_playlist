@@ -1,7 +1,7 @@
-from app import app, videos, get_video_by_id, current_video
+from .app import app, videos, get_video_by_id, current_video
 from flask_pydantic import validate
 from pydantic import RootModel
-from models import Video, video_from_url
+from .models import Video, video_from_url
 from flask import request, jsonify, abort
 import os
 import yt_dlp

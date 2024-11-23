@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, abort, redirect, url_for, jsonify
 from turbo_flask import Turbo
 from flask_pydantic import validate
-from models import Video, video_from_url
+from .models import Video, video_from_url
 from threading import Lock
 import dotenv
 import yt_dlp
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../templates')
 turbo = Turbo(app)
 
 videos: list[Video] = []
@@ -100,16 +100,3 @@ def reload_data():
         target='player'
     ))
     return jsonify({'status': 'ok'})
-
-
-setup_once_lock = Lock()
-@app.before_request
-def app_setup():
-    """
-    Setup app before first request
-    """
-    with setup_once_lock:
-        try:
-            dotenv.load_dotenv('.env')
-        finally:
-            app.before_request_funcs[None].remove(app_setup)
