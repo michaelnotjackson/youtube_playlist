@@ -1,6 +1,6 @@
 coverage_patch = ""
 
-with open("../code-coverage-results.md", "rw") as coverage:
+with open("../code-coverage-results.md", "r") as coverage:
     coverage_patch = coverage.readline()
 
 if coverage_patch == "":
