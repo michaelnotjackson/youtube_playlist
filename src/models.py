@@ -13,11 +13,11 @@ class Video:
     Dataclass which holds information about video
 
     Attributes:
-        - id: str - Video object uuid
+        - id: str | None - Video object uuid
         - title: str | None - Video title
         - thumbnail_url: str | None - Video thumbnail url
-        - video_url: str - YouTube video url
-        - playback_url: str - Video playback url
+        - video_url: str | None - YouTube video url
+        - playback_url: str | None - Video playback url
     """
     id: str | None
     title: str | None
