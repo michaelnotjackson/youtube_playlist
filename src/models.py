@@ -26,7 +26,7 @@ class Video:
     playback_url: str | None = None
 
 
-async def video_from_url(video_url: str, client_session: ClientSession | None = None):
+async def video_from_url(video_url: str, client_session: ClientSession | None = None) -> Video:
     """
     Video object factory function. Constructs video from url
     :param video_url:

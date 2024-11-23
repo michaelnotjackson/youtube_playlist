@@ -2,14 +2,14 @@ from .app import app, videos, get_video_by_id, current_video
 from flask_pydantic import validate
 from pydantic import RootModel
 from .models import Video, video_from_url
-from flask import request, jsonify, abort
+from flask import request, jsonify, abort, Response
 import os
 import yt_dlp
 
 
 @validate
 @app.route('/api/v1/get_next', methods=['GET'])
-def api_v1_get_next():
+def api_v1_get_next() -> Response:
     """
     Get next video from the list
     """
@@ -19,7 +19,7 @@ def api_v1_get_next():
 
 @validate
 @app.route('/api/v1/get_video_list', methods=['GET'])
-def api_v1_get_video_list():
+def api_v1_get_video_list() -> Response:
     """
     Get list of videos
     """
@@ -27,7 +27,7 @@ def api_v1_get_video_list():
 
 @validate
 @app.route('/api/v1/add', methods=['PUT'])
-async def api_v1_add():
+async def api_v1_add() -> Response:
     """
     Add video to the list.
     :param: video_url: str - YouTube video url
@@ -45,7 +45,7 @@ async def api_v1_add():
 
 @validate
 @app.route('/api/v1/delete', methods=['DELETE'])
-def api_v1_delete():
+def api_v1_delete() -> Response:
     """
     Delete video from the list
     :param: video_id: str - Video object uuid
@@ -57,7 +57,7 @@ def api_v1_delete():
 
 @validate
 @app.route('/api/v1/get_current', methods=['GET'])
-def api_v1_get_current():
+def api_v1_get_current() -> Response:
     """
     Get currently playing video
     """
@@ -65,7 +65,7 @@ def api_v1_get_current():
 
 @validate
 @app.route('/api/v1/get_video_data_by_id', methods=['GET'])
-def api_v1_get_video_data_by_id():
+def api_v1_get_video_data_by_id() -> Response:
     """
     Get video data by given id
     """

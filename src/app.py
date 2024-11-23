@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort, redirect, url_for, jsonify
+from flask import Flask, render_template, request, abort, redirect, url_for, jsonify, Response
 from turbo_flask import Turbo
 from flask_pydantic import validate
 from .models import Video, video_from_url
@@ -15,7 +15,7 @@ videos: list[Video] = []
 current_video: list[Video] = []
 
 
-def get_video_by_id(video_id: str):
+def get_video_by_id(video_id: str) -> Video:
     global videos
     video = [video for video in videos if video.id == video_id]
     if len(video) == 0:
@@ -24,7 +24,7 @@ def get_video_by_id(video_id: str):
 
 
 @app.route('/', methods=['GET', 'POST'])
-async def index():
+async def index() -> Response:
     """
     On GET request, render index.html template with videos list and current video.
     On POST request, add video to the list and rerender corresponding turbo frames.
@@ -48,7 +48,7 @@ async def index():
 
 @validate
 @app.route('/force_play/<video_id>', methods=['POST'])
-def force_play(video_id: int):
+def force_play(video_id: int) -> Response:
     """
     Forcefully play selected video
     :param video_id: str - Video object uuid
@@ -70,7 +70,7 @@ def force_play(video_id: int):
 
 @validate
 @app.route('/delete/<video_id>', methods=['POST'])
-def delete(video_id: str):
+def delete(video_id: str) -> Response:
     """
     Delete video from the list
     :param video_id: str - Video object uuid
@@ -85,7 +85,7 @@ def delete(video_id: str):
 
 @validate
 @app.route('/reload_data', methods=['POST'])
-def reload_data():
+def reload_data() -> Response:
     """
     Reload video list and player data
     """
