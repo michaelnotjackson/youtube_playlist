@@ -37,5 +37,6 @@ jobs:
           badge: true
           format: markdown
           output: both
+      - name: Write Coverage Badge
         run: |
           python utils/update_coverage_badge.py
