@@ -1,12 +1,12 @@
 coverage_patch = ""
 
-with open("../code-coverage-results.md", "r") as coverage:
+with open("code-coverage-results.md", "r") as coverage:
     coverage_patch = coverage.readline()
 
 if coverage_patch == "":
     exit(0)
 
-with open("../README.md", "r+") as readme:
+with open("README.md", "r+") as readme:
     lines = readme.readlines()
 
     written = False
