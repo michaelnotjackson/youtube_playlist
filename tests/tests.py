@@ -55,6 +55,7 @@ def test_api_v1_get_current(client, mocker):
     assert json['id'] == '1'
 
 def test_api_v1_get_video_data_by_id(client, mocker):
+    load_dotenv()
     video = Video(id='1', video_url='https://www.youtube.com/watch?v=dQw4w9WgXcQ', thumbnail_url='http://test.com/thumb.jpg')
     videos.append(video)
     mocker.patch('src.api.get_video_by_id', return_value=video)
