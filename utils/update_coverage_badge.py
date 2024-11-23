@@ -6,7 +6,7 @@ with open("../code-coverage-results.md", "rw") as coverage:
 if coverage_patch == "":
     exit(0)
 
-with open("../README.md", "rw") as readme:
+with open("../README.md", "r+") as readme:
     lines = readme.readlines()
 
     written = False
