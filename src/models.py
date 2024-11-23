@@ -19,11 +19,11 @@ class Video:
         - video_url: str | None - YouTube video url
         - playback_url: str | None - Video playback url
     """
-    id: str | None
-    title: str | None
-    thumbnail_url: str | None
-    video_url: str | None
-    playback_url: str | None
+    id: str | None = None
+    title: str | None = None
+    thumbnail_url: str | None = None
+    video_url: str | None = None
+    playback_url: str | None = None
 
 
 async def video_from_url(video_url: str, client_session: ClientSession | None = None):
