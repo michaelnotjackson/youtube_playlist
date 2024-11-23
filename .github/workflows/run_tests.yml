@@ -40,6 +40,15 @@ jobs:
           badge: true
           format: markdown
           output: both
+
+  submit-report:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.12" ]
+    needs:
+      - test
+    steps:
       - name: Write Coverage Badge
         run: |
           python utils/update_coverage_badge.py
