@@ -14,7 +14,7 @@ def api_v1_get_next():
     Get next video from the list
     """
     video = videos[0]
-    return RootModel[Video](video).model_dump_json(exclude={'playback_url'})
+    return jsonify(RootModel[Video](video).model_dump_json(exclude={'playback_url'}))
 
 
 @validate
@@ -23,7 +23,7 @@ def api_v1_get_video_list():
     """
     Get list of videos
     """
-    return RootModel[list[Video]](videos).model_dump_json(exclude={'playback_url'})
+    return jsonify(RootModel[list[Video]](videos).model_dump_json(exclude={'playback_url'}))
 
 @validate
 @app.route('/api/v1/add', methods=['PUT'])
@@ -41,7 +41,7 @@ async def api_v1_add():
     except ():
         abort(400)
     videos.append(video)
-    return RootModel[Video](video).model_dump_json(exclude={'playback_url'})
+    return jsonify(RootModel[Video](video).model_dump_json(exclude={'playback_url'}))
 
 @validate
 @app.route('/api/v1/delete', methods=['DELETE'])
@@ -53,7 +53,7 @@ def api_v1_delete():
     video_id = request.json['video_id']
     video = get_video_by_id(video_id)
     videos.remove(video)
-    return jsonify({'status': 'ok'})
+    return ''
 
 @validate
 @app.route('/api/v1/get_current', methods=['GET'])
@@ -61,7 +61,7 @@ def api_v1_get_current():
     """
     Get currently playing video
     """
-    return RootModel[Video](current_video[0]).model_dump_json()
+    return jsonify(RootModel[Video](current_video[0]).model_dump_json())
 
 @validate
 @app.route('/api/v1/get_video_data_by_id', methods=['GET'])
@@ -77,4 +77,4 @@ def api_v1_get_video_data_by_id():
             info = ydl.extract_info(video.video_url, download=False)
             video.playback_url = info['url']
 
-    return RootModel[Video](video).model_dump_json()
+    return jsonify(RootModel[Video](video).model_dump_json())

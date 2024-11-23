@@ -46,7 +46,7 @@ async def video_from_url(video_url: str, client_session: ClientSession | None = 
 
     response = await client_session.get(api_url)
 
-    response.raise_for_status()
+    await response.raise_for_status()
 
     data = await response.json()
 
