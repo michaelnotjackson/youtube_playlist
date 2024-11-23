@@ -1,3 +1,4 @@
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-83%25-success?style=flat)
 # Youtube playlist
 
 ## Credentials
