@@ -16,7 +16,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: |    
+        run: |
+          apt install poetry
           poetry install --with test
       - name: Test run tests
         run: |  
