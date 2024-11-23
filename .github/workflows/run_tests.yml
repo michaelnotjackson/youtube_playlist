@@ -20,7 +20,13 @@ jobs:
           sudo apt install pipx
           pipx install poetry
           poetry install --with test
+      - name: Prepare secrets
+        run: |
+          echo "${{ secrets.COOKIES }}" > cookies.txt
       - name: Test run tests
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          COOKIE_FILE_PATH: "cookies.txt"
         run: |  
           poetry run coverage run -m pytest -v -s tests/tests.py
       - name: Generate Coverage Report
