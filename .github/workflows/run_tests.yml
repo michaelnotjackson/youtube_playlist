@@ -29,6 +29,10 @@ jobs:
           COOKIE_FILE_PATH: "cookies.txt"
         run: |  
           poetry run coverage run -m pytest -v -s tests/tests.py
-      - name: Generate Coverage Report
-        run: |  
           poetry run coverage xml
+      - name: Generate Coverage Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: coverage.xml
+          badge: true
+          format: markdown
