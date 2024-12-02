@@ -79,7 +79,7 @@ async def test_video_from_url(mocker):
         }]
     }
 
-    mocker.patch('aiohttp.ClientSession.get', new_callable=AsyncMock, return_value=AsyncMock(json=AsyncMock(return_value=mock_response)))
+    mocker.patch('aiohttp.ClientSession.get', new_callable=AsyncMock, return_value=AsyncMock(json=AsyncMock(return_value=mock_response), status=200))
 
     video_url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
     video = await video_from_url(video_url)

@@ -3,7 +3,6 @@ import re
 
 from pydantic.dataclasses import dataclass
 from uuid import uuid4
-from os import getenv
 from aiohttp import ClientSession
 
 
@@ -24,6 +23,7 @@ class Video:
     thumbnail_url: str | None = None
     video_url: str | None = None
     playback_url: str | None = None
+    playback_ext: str | None = None
 
 
 async def video_from_url(video_url: str, client_session: ClientSession | None = None) -> Video:
@@ -46,7 +46,8 @@ async def video_from_url(video_url: str, client_session: ClientSession | None = 
 
     response = await client_session.get(api_url)
 
-    await response.raise_for_status()
+    if response.status != 200:
+        raise Exception(f'Failed to get video info. Status code: {response.status}')
 
     data = await response.json()
 

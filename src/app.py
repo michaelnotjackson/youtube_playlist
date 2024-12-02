@@ -2,8 +2,6 @@ from flask import Flask, render_template, request, abort, redirect, url_for, jso
 from turbo_flask import Turbo
 from flask_pydantic import validate
 from .models import Video, video_from_url
-from threading import Lock
-import dotenv
 import yt_dlp
 import os
 
@@ -23,7 +21,7 @@ def get_video_by_id(video_id: str) -> Video:
     return video[0]
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=["GET", "POST"])
 async def index() -> Response:
     """
     On GET request, render index.html template with videos list and current video.
@@ -31,7 +29,7 @@ async def index() -> Response:
     """
     global current_video, videos, turbo
     cur_vid = current_video[0] if len(current_video) else None
-    if request.method == 'POST':
+    if request.method == "POST":
         url = request.form['video']
         video = await video_from_url(url)
         videos.append(video)
@@ -47,7 +45,7 @@ async def index() -> Response:
 
 
 @validate
-@app.route('/force_play/<video_id>', methods=['POST'])
+@app.route('/force_play/<video_id>', methods=["POST"])
 def force_play(video_id: int) -> Response:
     """
     Forcefully play selected video
@@ -60,16 +58,18 @@ def force_play(video_id: int) -> Response:
     current_video.append(video)
 
     if current_video[0].playback_url is None:
-        ydl_opts = {'cookiefile': os.getenv('COOKIE_FILE_PATH'), 'format': 'best'}
+        ydl_opts = {'cookiefile': os.getenv('COOKIE_FILE_PATH'), 'format': 'best',
+                    'extractor_args': {'youtube': {'player_client': ['default', '-ios']}}}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(current_video[0].video_url, download=False)
             current_video[0].playback_url = info['url']
+            current_video[0].playback_ext = info['ext']
 
     return jsonify({'status': 'ok'})
 
 
 @validate
-@app.route('/delete/<video_id>', methods=['POST'])
+@app.route('/delete/<video_id>', methods=["POST"])
 def delete(video_id: str) -> Response:
     """
     Delete video from the list
@@ -84,7 +84,7 @@ def delete(video_id: str) -> Response:
 
 
 @validate
-@app.route('/reload_data', methods=['POST'])
+@app.route('/reload_data', methods=["POST"])
 def reload_data() -> Response:
     """
     Reload video list and player data

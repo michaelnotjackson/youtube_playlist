@@ -19,10 +19,11 @@
                 'Content-Type': 'application/json',
             }
         });
-        response = await response.json();
+        response = JSON.parse(await response.json());
         console.log(response);
         let player = videojs("vid1");
-        player.src({src: response['playback_url'], type: 'video/webm'});
+        console.log({src: response['playback_url'], type: 'video/' + response['playback_ext']});
+        player.src({src: response['playback_url'], type: 'video/' + response['playback_ext']});
         player.play();
     }
 </script>
