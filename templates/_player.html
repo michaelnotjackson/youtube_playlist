@@ -1,0 +1,25 @@
+<video id="vid1" class="video-js vjs-default-skin vjs-big-play-centered mt-2" controls preload="auto" width="560"
+       height="315">
+    <source src="{{ current_video.playback_url }}">
+</video>
+<script type="text/javascript">
+    const player = videojs("vid1", null, function () {
+        this.on("ended", async function () {
+            let video = await fetch("{{ url_for('api_v1_get_next') }}", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            video = JSON.parse(await video.json());
+            console.log(video);
+            play_video(video['id']);
+            fetch("/reload_data", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+        });
+    });
+</script>

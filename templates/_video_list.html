@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    async function play_video(video_id) {
+        console.log(video_id);
+        await fetch("/force_play/" + video_id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        await fetch("/reload_data", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        let response = await fetch(`/api/v1/get_current`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        response = JSON.parse(await response.json());
+        console.log(response);
+        let player = videojs("vid1");
+        console.log({src: response['playback_url'], type: 'video/' + response['playback_ext']});
+        player.src({src: response['playback_url'], type: 'video/' + response['playback_ext']});
+        player.play();
+    }
+</script>
+<turbo-frame id="videos">
+    <div class="list-group list-group-numbered d-flex flex-column justify-content-center align-items-center">
+        {% for video in videos %}
+            {% include '_video.html' %}
+        {% endfor %}
+    </div>
+</turbo-frame>

@@ -1,3 +1,4 @@
+![Code Coverage](https://img.shields.io/badge/Code%20Coverage-83%25-success?style=flat)
 # Youtube playlist
 
 ## Credentials
@@ -14,52 +15,33 @@ This is a convenient web tool for creating and controlling youtube playlists wit
 1) Ability to add videos manually
 2) Ability to control video flow
 3) Ability to skip to the desired video in queue
-4) Integration with donation alerts linked media
+4) <s>Integration with donationalerts linked media</s>
+
+Integration with dontaionalerts api was discarded because of extremely poor written API docs.
 
 ## Architecture
 
 ```python
 @dataclass
 class Video:
-"""
-Storage for info about queued videos
-"""
-	video_url: str
-	thumbnail_url: str
-	title: str
-	id: uuid.UUID
+    """
+    Dataclass which holds information about video
 
-class Playlist:
-"""
-Playlist controller
-"""
-	queue: collections.dequeue[Video]
-	current_idx: int
-
-	def get_current_video(self) -> Video:
-		"""
-		@return: currently playing video
-		"""
-		pass
-
-	def add_video(self, video: Video) -> None:
-		"""
-		Add video to queue to the last place
-
-		@type video: Video
-		@param video: Video to add into the queue
-		"""
-		pass
-
-	def remove_video(self, video_id: uuid.UUID) -> None:
-		"""
-		Removes specified video from the queue
-
-		@type video_id: uuid.UUID
-		@param video_id: ID of video to remove
-		"""
-		pass
+    Attributes:
+        - id: str - Video object uuid
+        - title: str | None - Video title
+        - thumbnail_url: str | None - Video thumbnail url
+        - video_url: str - YouTube video url
+        - playback_url: str - Video playback url
+    """
+    id: str | None
+    title: str | None
+    thumbnail_url: str | None
+    video_url: str | None
+    playback_url: str | None
 ```
+
+`EDIT: Deleted Playlist class as it's not needed`
 
 When addition of the video is requested either by hand or via API exemplar of class Video is created. All of its fields are assigned asynchronously. This guarantees that simultaneous requests can be worked with correctly. Then it's being put into the queue.
 
@@ -72,20 +54,51 @@ UI elemnts use same API as an external user does.
 ### Supported api endpoints
 
 <details>
-<summary>[PUT] /api/v1/add/{video_url}</summary>
+<summary>[GET] /api/v1/get_next</summary>
+Get next video from list
+</details>
+<details>
+<summary>[GET] /api/v1/get_current</summary>
+Get currently playing video
+</details>
+<details>
+<summary>[PUT] /api/v1/add?video_url=&lt;video_url&gt;</summary>
 Add video to the queue by its url
 </details>
 <details>
-<summary>[DELTE] /api/v1/delete/{video_id}</summary>
+<summary>[DELTE] /api/v1/delete?video_id=&lt;video_id&gt;</summary>
 Delete video by its id
 </details>
 <details>
 <summary>[GET] /api/v1/get_video_list</summary>
-Get list of links and titles to videos in queue, including last 5 played videos
+Get list of links and titles to videos in queue
+</details>
+<details>
+<summary>[GET] /api/v1/get_video_data_by_id?video_id=&lt;video_id&gt;</summary>
+Get video data, including playback url, by its id
 </details>
 
 ## Dependencies
 
-- python >= 3.10
-- fastapi
+- python >= 3.12
+- flask
+- flask[async]
+- turbo-flask
+- flask-pydantic
 - pydantic
+- aiohttp
+- yt-dlp
+- python-dotenv
+
+
+## Launching guide
+1) Install dependencies either via pip or poetry:
+    * In case of pip you need to run `pip install -r requirements.txt`
+    * In case of poetry you need to run `poetry install`
+2) Create `.env` file in the root of the project with the following content:
+    ```
+    YOUTUBE_API_KEY=<your_youtube_api_key>
+    COOKIE_FILE_PATH=<path_to_cookie_file_with_youtube_auth>
+    ```
+   * Cookie file can be obtained by following [yt-dlp documentation](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies)
+3) Run the server by executing `python main.py`

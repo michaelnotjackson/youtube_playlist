@@ -1,0 +1,22 @@
+<div class="list-group-item border-0 d-flex align-items-center w-100 h-25" id="video-{{ video.id }}" style="max-height: 25%">
+    <div class="list-group list-group-horizontal-sm flex-grow-1">
+        <div class="list-group-item">
+            <img src="{{ video.thumbnail_url }}" alt="{{ video.title }}">
+        </div>
+        <div class="list-group-item d-flex flex-column justify-content-center flex-fill">
+            <label>{{ video.title }}</label>
+        </div>
+        <div class="list-group-item d-flex flex-column justify-content-center">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn" onclick="play_video('{{ video.id }}');">
+                    <i class="bi bi-play-fill"></i>
+                </button>
+                <form method="POST" action="{{ url_for('delete', video_id=video.id) }}">
+                    <button type="submit" class="btn">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
