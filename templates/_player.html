@@ -11,7 +11,7 @@
                     'Content-Type': 'application/json',
                 }
             });
-            video = await video.json();
+            video = JSON.parse(await video.json());
             console.log(video);
             play_video(video['id']);
             fetch("/reload_data", {
