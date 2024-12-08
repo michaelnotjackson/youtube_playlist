@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, abort, redirect, url_for, jsonify, Response
 from turbo_flask import Turbo
 from flask_pydantic import validate
-from .models import Video, video_from_url
+from .models import Video, video_from_url, http_methods
 import yt_dlp
 import os
 
@@ -21,7 +21,7 @@ def get_video_by_id(video_id: str) -> Video:
     return video[0]
 
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/', methods=[http_methods.GET, http_methods.POST])
 async def index() -> Response:
     """
     On GET request, render index.html template with videos list and current video.
@@ -29,7 +29,7 @@ async def index() -> Response:
     """
     global current_video, videos, turbo
     cur_vid = current_video[0] if len(current_video) else None
-    if request.method == "POST":
+    if request.method == http_methods.POST:
         url = request.form['video']
         video = await video_from_url(url)
         videos.append(video)
@@ -45,7 +45,7 @@ async def index() -> Response:
 
 
 @validate
-@app.route('/force_play/<video_id>', methods=["POST"])
+@app.route('/force_play/<video_id>', methods=[http_methods.POST])
 def force_play(video_id: int) -> Response:
     """
     Forcefully play selected video
@@ -69,7 +69,7 @@ def force_play(video_id: int) -> Response:
 
 
 @validate
-@app.route('/delete/<video_id>', methods=["POST"])
+@app.route('/delete/<video_id>', methods=[http_methods.POST])
 def delete(video_id: str) -> Response:
     """
     Delete video from the list
@@ -84,7 +84,7 @@ def delete(video_id: str) -> Response:
 
 
 @validate
-@app.route('/reload_data', methods=["POST"])
+@app.route('/reload_data', methods=[http_methods.POST])
 def reload_data() -> Response:
     """
     Reload video list and player data

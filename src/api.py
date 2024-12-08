@@ -1,14 +1,14 @@
 from .app import app, videos, get_video_by_id, current_video
 from flask_pydantic import validate
 from pydantic import RootModel
-from .models import Video, video_from_url
+from .models import Video, video_from_url, http_methods
 from flask import request, jsonify, abort, Response
 import os
 import yt_dlp
 
 
 @validate
-@app.route('/api/v1/get_next', methods=["GET"])
+@app.route('/api/v1/get_next', methods=[http_methods.GET])
 def api_v1_get_next() -> Response:
     """
     Get next video from the list
@@ -18,7 +18,7 @@ def api_v1_get_next() -> Response:
 
 
 @validate
-@app.route('/api/v1/get_video_list', methods=["GET"])
+@app.route('/api/v1/get_video_list', methods=[http_methods.GET])
 def api_v1_get_video_list() -> Response:
     """
     Get list of videos
@@ -59,7 +59,7 @@ def api_v1_delete() -> Response:
 
 
 @validate
-@app.route('/api/v1/get_current', methods=["GET"])
+@app.route('/api/v1/get_current', methods=[http_methods.GET])
 def api_v1_get_current() -> Response:
     """
     Get currently playing video
@@ -68,7 +68,7 @@ def api_v1_get_current() -> Response:
 
 
 @validate
-@app.route('/api/v1/get_video_data_by_id', methods=["GET"])
+@app.route('/api/v1/get_video_data_by_id', methods=[http_methods.GET])
 def api_v1_get_video_data_by_id() -> Response:
     """
     Get video data by given id

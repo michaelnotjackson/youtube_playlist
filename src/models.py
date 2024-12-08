@@ -4,7 +4,8 @@ import re
 from pydantic.dataclasses import dataclass
 from uuid import uuid4
 from aiohttp import ClientSession
-
+from typing import Literal
+from pydantic import BaseModel, Field
 
 @dataclass
 class Video:
@@ -61,3 +62,9 @@ async def video_from_url(video_url: str, client_session: ClientSession | None = 
         video_url,
         None
     )
+
+class HttpMethods(BaseModel):
+    GET: Literal['GET'] = Field(default='GET')
+    POST: Literal['POST'] = Field(default='POST')
+
+http_methods = HttpMethods()
